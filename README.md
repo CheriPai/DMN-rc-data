@@ -1,13 +1,6 @@
-# Dynamic memory networks in Theano
-The aim of this repository is to implement Dynamic memory networks 
-as described in the [paper by Kumar et al.](http://arxiv.org/abs/1506.07285)
-and to experiment with its various extensions.
+# Dynamic memory networks trained on rc-data
 
-**Pretrained models on bAbI tasks can be tested [online](http://yerevann.com/dmn-ui/).**
-
-We will cover the process in a series of blog posts.
-* [The first post](http://yerevann.github.io/2016/02/05/implementing-dynamic-memory-networks/) describes the details of the basic architecture and presents our first results on [bAbI tasks](http://fb.ai/babi) v1.2.
-* [The second post](http://yerevann.github.io/2016/02/23/playground-for-babi-tasks/) describes our second model called `dmn_smooth` and introduces our [playground for bAbI tasks](http://yerevann.com/dmn-ui/).
+Forked from https://github.com/YerevaNN/Dynamic-memory-networks-in-Theano
 
 ## Repository contents
 
@@ -20,7 +13,6 @@ We will cover the process in a series of blog posts.
 | `dmn_qa_draft.py` | draft version of a DMN designed for answering multiple choice questions | 
 | `utils.py` | tools for working with bAbI tasks and GloVe vectors |
 | `nn_utils.py` | helper functions on top of Theano and Lasagne |
-| `fetch_babi_data.sh` | shell script to fetch bAbI tasks (adapted from [MemN2N](https://github.com/npow/MemN2N)) |
 | `fetch_glove_data.sh` | shell script to fetch GloVe vectors (by [5vision](https://github.com/5vision/kaggle_allen)) |
 | `server/` | contains Flask-based restful api server |
 
@@ -32,9 +24,8 @@ This implementation is based on Theano and Lasagne. One way to install them is:
     pip install -r https://raw.githubusercontent.com/Lasagne/Lasagne/master/requirements.txt
     pip install https://github.com/Lasagne/Lasagne/archive/master.zip
 
-The following bash scripts will download bAbI tasks and GloVe vectors.
+The following bash scripts will download GloVe vectors.
 
-    ./fetch_babi_data.sh
     ./fetch_glove_data.sh
 
 Use `main.py` to train a network:
