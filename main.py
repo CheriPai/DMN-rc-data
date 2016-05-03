@@ -14,21 +14,20 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--network', type=str, default="dmn_batch", help='embeding size (50, 100, 200, 300 only)')
 parser.add_argument('--word_vector_size', type=int, default=50, help='embeding size (50, 100, 200, 300 only)')
 parser.add_argument('--dim', type=int, default=40, help='number of hidden units in input module GRU')
-parser.add_argument('--epochs', type=int, default=500, help='number of epochs')
+parser.add_argument('--epochs', type=int, default=50, help='number of epochs')
 parser.add_argument('--load_state', type=str, default="", help='state file path')
 parser.add_argument('--answer_module', type=str, default="feedforward", help='answer module type: feedforward or recurrent')
 parser.add_argument('--mode', type=str, default="train", help='mode: train or test. Test mode required load_state')
 parser.add_argument('--input_mask_mode', type=str, default="sentence", help='input_mask_mode: word or sentence')
 parser.add_argument('--memory_hops', type=int, default=5, help='memory GRU steps')
 parser.add_argument('--batch_size', type=int, default=10, help='no commment')
-parser.add_argument('--babi_id', type=str, default="1", help='babi task ID')
+parser.add_argument('--dataset', type=str, default="cnn", help='dataset name')
 parser.add_argument('--l2', type=float, default=0, help='L2 regularization')
 parser.add_argument('--normalize_attention', type=bool, default=False, help='flag for enabling softmax on attention vector')
 parser.add_argument('--log_every', type=int, default=1, help='print information every x iteration')
 parser.add_argument('--save_every', type=int, default=1, help='save state every x epoch')
 parser.add_argument('--prefix', type=str, default="", help='optional prefix of network name')
 parser.add_argument('--no-shuffle', dest='shuffle', action='store_false')
-parser.add_argument('--babi_test_id', type=str, default="", help='babi_id of test set (leave empty to use --babi_id)')
 parser.add_argument('--dropout', type=float, default=0.0, help='dropout rate (between 0 and 1)')
 parser.add_argument('--batch_norm', type=bool, default=False, help='batch normalization')
 parser.set_defaults(shuffle=True)
@@ -38,7 +37,7 @@ print args
 
 assert args.word_vector_size in [50, 100, 200, 300]
 
-network_name = args.prefix + '%s.mh%d.n%d.bs%d%s%s%s.babi%s' % (
+network_name = args.prefix + '%s.mh%d.n%d.bs%d%s%s%s.%s' % (
     args.network, 
     args.memory_hops, 
     args.dim, 
@@ -46,10 +45,10 @@ network_name = args.prefix + '%s.mh%d.n%d.bs%d%s%s%s.babi%s' % (
     ".na" if args.normalize_attention else "", 
     ".bn" if args.batch_norm else "", 
     (".d" + str(args.dropout)) if args.dropout>0 else "",
-    args.babi_id)
+    args.dataset)
 
 
-babi_train_raw, babi_test_raw = utils.get_babi_raw(args.babi_id, args.babi_test_id)
+babi_train_raw, babi_test_raw = utils.get_babi_raw(args.dataset)
 
 word2vec = utils.load_glove(args.word_vector_size)
 
