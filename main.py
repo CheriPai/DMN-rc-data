@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--network',
                     type=str,
                     default="dmn_batch",
-                    help='embeding size (50, 100, 200, 300 only)')
+                    help='network type: dmn_basic, dmn_smooth, or dmn_batch')
 parser.add_argument('--word_vector_size',
                     type=int,
                     default=50,
