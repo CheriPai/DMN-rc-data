@@ -28,7 +28,7 @@ def get_babi_raw(dataset_name):
             __file__)), 'data/%s/questions/validation/' % dataset_name))
     babi_test_raw = init_babi(os.path.join(
         os.path.dirname(os.path.realpath(
-            __file__)), 'data/%s/questions/validation/' % dataset_name))
+            __file__)), 'data/%s/questions/test/' % dataset_name))
     return babi_train_raw, babi_test_raw
 
 
@@ -50,7 +50,12 @@ def load_glove(dim):
 
 def create_vector(word, word2vec, word_vector_size, silent=False):
     # if the word is missing from Glove, create some fake vector and store in glove!
-    vector = np.random.uniform(0.0, 1.0, (word_vector_size, ))
+    try:
+        entity_num = '0.' + word[7:]
+        vector = np.array(np.empty(word_vector_size))
+        vector.fill(float(entity_num))
+    except ValueError:
+        vector = np.random.uniform(0.0, 1.0, (word_vector_size, ))
     word2vec[word] = vector
     if (not silent):
         print "utils.py::create_vector => %s is missing" % word
@@ -65,8 +70,7 @@ def process_word(word,
                  to_return="word2vec",
                  silent=False):
     if not word in word2vec:
-        # Create a vector for each @entity
-        if word[0] == "@":
+        if "@entity" in word:
             create_vector(word, word2vec, word_vector_size, silent)
         else:
             # Use unknown token for all other words not in word2vec
