@@ -25,7 +25,7 @@ def init_babi(path):
 def get_babi_raw(dataset_name):
     babi_train_raw = init_babi(os.path.join(
         os.path.dirname(os.path.realpath(
-            __file__)), 'data/%s/questions/test/' % dataset_name))
+            __file__)), 'data/%s/questions/validation/' % dataset_name))
     babi_test_raw = init_babi(os.path.join(
         os.path.dirname(os.path.realpath(
             __file__)), 'data/%s/questions/validation/' % dataset_name))
@@ -65,7 +65,14 @@ def process_word(word,
                  to_return="word2vec",
                  silent=False):
     if not word in word2vec:
-        create_vector(word, word2vec, word_vector_size, silent)
+        # Create a vector for each @entity
+        if word[0] == "@":
+            create_vector(word, word2vec, word_vector_size, silent)
+        else:
+            # Use unknown token for all other words not in word2vec
+            word = "@unknown"
+            if not word in word2vec:
+                create_vector(word, word2vec, word_vector_size, silent)
     if not word in vocab:
         next_index = len(vocab)
         vocab[word] = next_index
