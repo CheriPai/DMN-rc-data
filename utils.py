@@ -79,12 +79,9 @@ def process_word(word,
             if not word in word2vec:
                 create_vector(word, word2vec, word_vector_size, silent)
     if not word in vocab and "@entity" in word:
-        entity_num = int(word[7:])
-        vocab[word] = entity_num
-        ivocab[entity_num] = word
-        # next_index = len(vocab)
-        # vocab[word] = next_index
-        # ivocab[next_index] = word
+        next_index = len(vocab)
+        vocab[word] = next_index
+        ivocab[next_index] = word
 
     if to_return == "word2vec":
         return word2vec[word]
