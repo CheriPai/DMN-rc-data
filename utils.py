@@ -49,11 +49,12 @@ def load_glove(dim):
 
 
 def create_vector(word, word2vec, word_vector_size, silent=False):
-    # if the word is missing from Glove, create some fake vector and store in glove!
+    # Create a vector corresponding to the @entity number
     try:
         entity_num = '0.' + word[7:]
         vector = np.array(np.empty(word_vector_size))
         vector.fill(float(entity_num))
+    # If word is not @entity create a random vector
     except ValueError:
         vector = np.random.uniform(0.0, 1.0, (word_vector_size, ))
     word2vec[word] = vector
@@ -77,10 +78,13 @@ def process_word(word,
             word = "@unknown"
             if not word in word2vec:
                 create_vector(word, word2vec, word_vector_size, silent)
-    if not word in vocab:
-        next_index = len(vocab)
-        vocab[word] = next_index
-        ivocab[next_index] = word
+    if not word in vocab and "@entity" in word:
+        entity_num = int(word[7:])
+        vocab[word] = entity_num
+        ivocab[entity_num] = word
+        # next_index = len(vocab)
+        # vocab[word] = next_index
+        # ivocab[next_index] = word
 
     if to_return == "word2vec":
         return word2vec[word]

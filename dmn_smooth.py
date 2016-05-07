@@ -179,7 +179,7 @@ class DMN_smooth:
         
         #updates = lasagne.updates.adadelta(self.loss, self.params)
         #updates = lasagne.updates.momentum(self.loss, self.params, learning_rate=0.0003)
-        updates = lasagne.updates.adam(self.loss, self.params, learning_rate=0.001)
+        updates = lasagne.updates.adam(self.loss, self.params, learning_rate=self.learning_rate)
         
         if self.mode == 'train':
             print "==> compiling train_fn"
