@@ -141,6 +141,8 @@ def do_epoch(mode, epoch, skipped=0):
 
     for i in range(0, batches_per_epoch):
         step_data = dmn.step(i, mode)
+	if step_data is None:
+	    continue
         prediction = step_data["prediction"]
         answers = step_data["answers"]
         current_loss = step_data["current_loss"]

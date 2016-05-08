@@ -365,7 +365,10 @@ class DMN_smooth:
         ans = answers[batch_index]
         input_mask = input_masks[batch_index]
 
-        ret = theano_fn(inp, q, ans, input_mask)
+	try:
+	    ret = theano_fn(inp, q, ans, input_mask)
+        except ValueError:
+	    return None
         param_norm = np.max([utils.get_norm(x.get_value()) for x in self.params])
         
         return {"prediction": np.array([ret[0]]),
