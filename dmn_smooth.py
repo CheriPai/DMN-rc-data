@@ -39,7 +39,8 @@ class DMN_smooth:
         self.dropout = dropout
         self.learning_rate = learning_rate
         
-        self.train_input, self.train_q, self.train_answer, self.train_input_mask = self._process_input(babi_train_raw)
+        if mode == 'train':
+            self.train_input, self.train_q, self.train_answer, self.train_input_mask = self._process_input(babi_train_raw)
         self.test_input, self.test_q, self.test_answer, self.test_input_mask = self._process_input(babi_test_raw)
         self.vocab_size = len(self.vocab)
 

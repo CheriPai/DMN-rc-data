@@ -140,9 +140,12 @@ def do_epoch(mode, epoch, skipped=0):
     batches_per_epoch = dmn.get_batches_per_epoch(mode)
 
     for i in range(0, batches_per_epoch):
-        step_data = dmn.step(i, mode)
-	if step_data is None:
-	    continue
+        try:
+            step_data = dmn.step(i, mode)
+        except IndexError:
+            continue
+        if step_data is None:
+            continue
         prediction = step_data["prediction"]
         answers = step_data["answers"]
         current_loss = step_data["current_loss"]

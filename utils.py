@@ -25,10 +25,10 @@ def init_babi(path):
 def get_babi_raw(dataset_name):
     babi_train_raw = init_babi(os.path.join(
         os.path.dirname(os.path.realpath(
-            __file__)), 'data/%s/questions/validation/' % dataset_name))
+            __file__)), 'data/%s/questions/training_30k/' % dataset_name))
     babi_test_raw = init_babi(os.path.join(
         os.path.dirname(os.path.realpath(
-            __file__)), 'data/%s/questions/test/' % dataset_name))
+            __file__)), 'data/%s/questions/validation/' % dataset_name))
     return babi_train_raw, babi_test_raw
 
 
@@ -51,12 +51,13 @@ def load_glove(dim):
 def create_vector(word, word2vec, word_vector_size, silent=False):
     # Create a vector corresponding to the @entity number
     try:
-        entity_num = '0.' + word[7:]
+        entity_num = float(word[7:])
         vector = np.array(np.empty(word_vector_size))
-        vector.fill(float(entity_num))
+        vector.fill(entity_num)
     # If word is not @entity create a random vector
     except ValueError:
-        vector = np.random.uniform(0.0, 1.0, (word_vector_size, ))
+        vector = np.array(np.empty(word_vector_size))
+        vector.fill(0.5)
     word2vec[word] = vector
     if (not silent):
         print "utils.py::create_vector => %s is missing" % word
@@ -72,6 +73,7 @@ def process_word(word,
                  silent=False):
     if not word in word2vec:
         if "@entity" in word:
+            create_entities(word2vec, word_vector_size)
             create_vector(word, word2vec, word_vector_size, silent)
         else:
             # Use unknown token for all other words not in word2vec
@@ -89,6 +91,14 @@ def process_word(word,
         return vocab[word]
     elif to_return == "onehot":
         raise Exception("to_return = 'onehot' is not implemented yet")
+
+
+def create_entities(word2vec, word_vector_size):
+    for i in range(2000):
+        vector = np.array(np.empty(word_vector_size))
+        vector.fill(i)
+        word2vec["@entity"+str(i)] = vector
+    return vector
 
 
 def get_norm(x):
