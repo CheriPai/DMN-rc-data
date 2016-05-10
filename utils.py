@@ -81,9 +81,8 @@ def process_word(word,
             if not word in word2vec:
                 create_vector(word, word2vec, word_vector_size, silent)
     if not word in vocab and "@entity" in word:
-        next_index = len(vocab)
-        vocab[word] = next_index
-        ivocab[next_index] = word
+        # ADD NEW WORD IF NOT EXISTING
+        vocab, ivocab = create_entities_vocab(vocab, ivocab)
 
     if to_return == "word2vec":
         return word2vec[word]
@@ -99,6 +98,13 @@ def create_entities(word2vec, word_vector_size):
         vector.fill(i)
         word2vec["@entity"+str(i)] = vector
     return vector
+
+
+def create_entities_vocab(vocab, ivocab):
+    for i in range(2000):
+        vocab["@entity"+str(i)] = i
+        ivocab[i] = "@entity"+str(i)
+    return vocab, ivocab
 
 
 def get_norm(x):
