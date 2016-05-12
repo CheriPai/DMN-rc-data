@@ -76,6 +76,10 @@ parser.add_argument('--batch_norm',
                     type=bool,
                     default=False,
                     help='batch normalization')
+parser.add_argument('--index',
+                    type=str,
+                    default='',
+                    help='dataset index')
 parser.set_defaults(shuffle=True)
 args = parser.parse_args()
 
@@ -88,7 +92,7 @@ network_name = args.prefix + '%s.mh%d.n%d.bs%d%s%s%s.%s' % (
     if args.normalize_attention else "", ".bn" if args.batch_norm else "",
     (".d" + str(args.dropout)) if args.dropout > 0 else "", args.dataset)
 
-babi_train_raw, babi_test_raw = utils.get_babi_raw(args.dataset)
+babi_train_raw, babi_test_raw = utils.get_babi_raw(args.dataset, args.index)
 
 word2vec = utils.load_glove(args.word_vector_size)
 
@@ -208,6 +212,9 @@ if args.mode == 'train':
         if (epoch % args.save_every == 0):
             print "==> saving ... %s" % state_name
             dmn.save_params(state_name, epoch)
+            file = open('last_saved_model.txt', 'w+')
+            file.write(state_name)
+            file.close()
 
         print "epoch %d took %.3fs" % (epoch, float(time.time()) - start_time)
 

@@ -22,10 +22,15 @@ def init_babi(path):
     return tasks
 
 
-def get_babi_raw(dataset_name):
-    babi_train_raw = init_babi(os.path.join(
-        os.path.dirname(os.path.realpath(
-            __file__)), 'data/%s/questions/training_30k/' % dataset_name))
+def get_babi_raw(dataset_name, index):
+    if index != '':
+        babi_train_raw = init_babi(os.path.join(
+            os.path.dirname(os.path.realpath(
+                __file__)), 'data/%s/questions/1/%s' % (dataset_name, index)))
+    else:
+        babi_train_raw = init_babi(os.path.join(
+            os.path.dirname(os.path.realpath(
+                __file__)), 'data/%s/questions/training_30k/' % dataset_name))
     babi_test_raw = init_babi(os.path.join(
         os.path.dirname(os.path.realpath(
             __file__)), 'data/%s/questions/validation/' % dataset_name))
