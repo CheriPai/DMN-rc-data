@@ -26,7 +26,7 @@ def get_babi_raw(dataset_name, index):
     if index != '':
         babi_train_raw = init_babi(os.path.join(
             os.path.dirname(os.path.realpath(
-                __file__)), 'data/%s/questions/1/%s' % (dataset_name, index)))
+                __file__)), 'data/%s/questions/training_split/%s' % (dataset_name, index)))
     else:
         babi_train_raw = init_babi(os.path.join(
             os.path.dirname(os.path.realpath(
@@ -109,6 +109,8 @@ def create_entities_vocab(vocab, ivocab):
     for i in range(2000):
         vocab["@entity"+str(i)] = i
         ivocab[i] = "@entity"+str(i)
+    vocab['.'] = 1999
+    ivocab[1999] = '.'
     return vocab, ivocab
 
 

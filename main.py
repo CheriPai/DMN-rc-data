@@ -35,7 +35,7 @@ parser.add_argument('--answer_module',
 parser.add_argument('--mode',
                     type=str,
                     default="train",
-                    help='mode: train or test. Test mode required load_state')
+                    help='mode: train, test, or predict. Test and predict mode required load_state')
 parser.add_argument('--input_mask_mode',
                     type=str,
                     default="sentence",
@@ -227,6 +227,11 @@ elif args.mode == 'test':
     data["vocab"] = dmn.vocab.keys()
     json.dump(data, file, indent=2)
     do_epoch('test', 0)
+
+elif args.mode == 'predict':
+    data = utils.init_babi('data/cnn/questions/1/0/')
+    probabilities, attentions = dmn.predict(data)
+    print('@entity'+np.argmax(probabilities))
 
 else:
     raise Exception("unknown mode")
