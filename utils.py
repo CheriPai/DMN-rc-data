@@ -75,7 +75,8 @@ def process_word(word,
                  ivocab,
                  word_vector_size,
                  to_return="word2vec",
-                 silent=False):
+                 silent=False,
+                 mode='train'):
     if not word in word2vec:
         if "@entity" in word:
             create_entities(word2vec, word_vector_size)
@@ -86,8 +87,10 @@ def process_word(word,
             if not word in word2vec:
                 create_vector(word, word2vec, word_vector_size, silent)
     if not word in vocab and "@entity" in word:
-        # ADD NEW WORD IF NOT EXISTING
         vocab, ivocab = create_entities_vocab(vocab, ivocab)
+        if mode == 'predict':
+            vocab["."] = 1999
+            ivocab[1999] = "."
 
     if to_return == "word2vec":
         return word2vec[word]
@@ -109,8 +112,6 @@ def create_entities_vocab(vocab, ivocab):
     for i in range(2000):
         vocab["@entity"+str(i)] = i
         ivocab[i] = "@entity"+str(i)
-    vocab['.'] = 1999
-    ivocab[1999] = '.'
     return vocab, ivocab
 
 

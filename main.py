@@ -231,7 +231,7 @@ elif args.mode == 'test':
 elif args.mode == 'predict':
     data = utils.init_babi('data/cnn/questions/1/0/')
     probabilities, attentions = dmn.predict(data)
-    print('@entity'+np.argmax(probabilities))
+    print np.argmax(probabilities)
 
 else:
     raise Exception("unknown mode")

@@ -298,14 +298,16 @@ class DMN_smooth:
                                         vocab = self.vocab, 
                                         ivocab = self.ivocab, 
                                         word_vector_size = self.word_vector_size, 
-                                        to_return = "word2vec") for w in inp]
+                                        to_return = "word2vec",
+                                        mode=self.mode) for w in inp]
                                         
             q_vector = [utils.process_word(word = w, 
                                         word2vec = self.word2vec, 
                                         vocab = self.vocab, 
                                         ivocab = self.ivocab, 
                                         word_vector_size = self.word_vector_size, 
-                                        to_return = "word2vec") for w in q]
+                                        to_return = "word2vec",
+                                        mode=self.mode) for w in q]
             
             inputs.append(np.vstack(inp_vector).astype(floatX))
             questions.append(np.vstack(q_vector).astype(floatX))
@@ -314,7 +316,8 @@ class DMN_smooth:
                                             vocab = self.vocab, 
                                             ivocab = self.ivocab, 
                                             word_vector_size = self.word_vector_size, 
-                                            to_return = "index"))
+                                            to_return = "index",
+                                            mode=self.mode))
             # NOTE: here we assume the answer is one word! 
             if self.input_mask_mode == 'word':
                 input_masks.append(np.array([index for index, w in enumerate(inp)], dtype=np.int32)) 
