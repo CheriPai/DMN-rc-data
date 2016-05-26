@@ -30,7 +30,7 @@ def get_babi_raw(dataset_name, index):
     else:
         babi_train_raw = init_babi(os.path.join(
             os.path.dirname(os.path.realpath(
-                __file__)), 'data/%s/questions/training_30k/' % dataset_name))
+                __file__)), 'data/%s/questions/training/' % dataset_name))
     babi_test_raw = init_babi(os.path.join(
         os.path.dirname(os.path.realpath(
             __file__)), 'data/%s/questions/validation/' % dataset_name))
