@@ -14,21 +14,25 @@
             <h1>DMN rc-data</h1>
             <hr></hr>
             <div class="col-sm-8">
-                <h4>Input Text</h4>
-                <textarea type="text" class="form-control" id="input" readonly></textarea>
+                <h4>Context</h4>
+                <textarea type="text" class="form-control" id="context" readonly>{{ context }}</textarea>
             </div>
             <div class="col-sm-4">
-                <h4>Actual Answer</h4>
-                <textarea type="text" class="form-control output" readonly></textarea>
+                <h4>Question</h4>
+                <textarea type="text" class="form-control" id="question" readonly>{{ question }}</textarea>
+                <h4>Correct Answer</h4>
+                <textarea type="text" class="form-control answer" id="correct" readonly>{{ correct_answer }}</textarea>
                 <h4>Predicted Answer</h4>
-                <textarea type="text" class="form-control output" readonly></textarea>
-                <br><button class="btn btn-primary" type="submit">Random Example</button>
+                <textarea type="text" class="form-control answer" id="prediction" readonly>{{ prediction }}</textarea>
+                <br><button class="btn btn-primary" id="randValidation" type="submit">Random Validation</button>
+                <button class="btn btn-primary" id="randTest" type="submit">Random Test</button>
             </div>
         </div>
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="static/js/bootstrap.min.js"></script>
+        <script src="static/js/script.js"></script>
     </body>
 </html>
 

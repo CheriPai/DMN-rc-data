@@ -1,8 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
+from numpy import argmax
+from random import choice
 import dmn_smooth
-import numpy as np
 import os
-import random
 import utils
 
 
@@ -19,21 +19,39 @@ batch_norm = False
 dropout = 0.05
 learning_rate = 0.0001
 state = 'states/dmn_smooth.mh5.n64.bs10.d0.05.cnn.epoch0.test2.66246.state'
-path = 'data/cnn/questions/validation/'
+validation_path = 'data/cnn/questions/validation/'
+test_path = 'data/cnn/questions/test/'
 dmn = None
 
 
 @app.route('/')
 def main():
-    random_file = random.choice(os.listdir(path))
-    data = utils.init_file(path + random_file)
-    correct_answer = data[0]["A"]
-    probabilities, attentions = dmn.predict(data)
-    print probabilities[0:50]
-    return "Prediction: @entity" + \
-        str(np.argmax(probabilities)) + "    " + \
-        "Answer: " + correct_answer
     return render_template('index.html')
+
+
+@app.route('/random/<dataset>')
+def random(dataset):
+    if dataset == 'test':
+        path = test_path
+    else:
+        path = validation_path
+
+    random_file = choice(os.listdir(path))
+    data = utils.init_file(path + random_file)
+
+    context = data[0]["C"]
+    question = data[0]["Q"]
+    correct_answer = data[0]["A"]
+
+    probabilities, attentions = dmn.predict(data)
+    prediction = "@entity" + str(argmax(probabilities))
+    
+    return jsonify(
+        context=context,
+        question=question,
+        correct_answer=correct_answer,
+        prediction=prediction
+    )
 
 
 if __name__ == '__main__':
