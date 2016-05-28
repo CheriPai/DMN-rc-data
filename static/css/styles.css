@@ -1,0 +1,14 @@
+html, body, .container, .col-sm-8 {
+  height: 100%;
+}
+
+#input {
+  height: 70%;
+  width: 100%;
+  resize: none;
+}
+
+.output {
+  width: 100%;
+  resize: none;
+}

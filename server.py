@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import dmn_smooth
 import numpy as np
 import os
@@ -19,19 +19,21 @@ batch_norm = False
 dropout = 0.05
 learning_rate = 0.0001
 state = 'states/dmn_smooth.mh5.n64.bs10.d0.05.cnn.epoch0.test2.66246.state'
+path = 'data/cnn/questions/validation/'
 dmn = None
 
 
 @app.route('/')
 def main():
-    random_file = random.choice(os.listdir('data/cnn/questions/validation/'))
-    data = utils.init_file('data/cnn/questions/validation/' + random_file)
+    random_file = random.choice(os.listdir(path))
+    data = utils.init_file(path + random_file)
     correct_answer = data[0]["A"]
     probabilities, attentions = dmn.predict(data)
     print probabilities[0:50]
     return "Prediction: @entity" + \
         str(np.argmax(probabilities)) + "    " + \
         "Answer: " + correct_answer
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
