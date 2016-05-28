@@ -1,6 +1,8 @@
 from flask import Flask
 import dmn_smooth
 import numpy as np
+import os
+import random
 import utils
 
 
@@ -22,10 +24,14 @@ dmn = None
 
 @app.route('/')
 def main():
-    data = utils.init_babi('data/cnn/questions/1/')
+    random_file = random.choice(os.listdir('data/cnn/questions/validation/'))
+    data = utils.init_file('data/cnn/questions/validation/' + random_file)
+    correct_answer = data[0]["A"]
     probabilities, attentions = dmn.predict(data)
     print probabilities[0:50]
-    return str(np.argmax(probabilities))
+    return "Prediction: @entity" + \
+        str(np.argmax(probabilities)) + "    " + \
+        "Answer: " + correct_answer
 
 
 if __name__ == '__main__':

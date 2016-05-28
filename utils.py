@@ -22,6 +22,24 @@ def init_babi(path):
     return tasks
 
 
+def init_file(path):
+    print "==> Loading from %s" % path
+    tasks = []
+    task = None
+    with open(path) as f:
+        task = {"C": "", "Q": "", "A": ""}
+        for i, line in enumerate(f):
+            line = line.strip()
+            if i == 2:
+                task["C"] = line + " "
+            elif i == 4:
+                task["Q"] = line
+            elif i == 6:
+                task["A"] = line
+        tasks.append(task.copy())
+
+    return tasks
+
 def get_babi_raw(dataset_name, index):
     if index != '':
         babi_train_raw = init_babi(os.path.join(
