@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--network',
                     type=str,
-                    default="dmn_batch",
+                    default="dmn_smooth",
                     help='network type: dmn_basic, dmn_smooth, or dmn_batch')
 parser.add_argument('--word_vector_size',
                     type=int,
