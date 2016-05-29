@@ -38,20 +38,50 @@ def random(dataset):
 
     random_file = choice(os.listdir(path))
     data = utils.init_file(path + random_file)
-
-    context = data[0]["C"]
-    question = data[0]["Q"]
     correct_answer = data[0]["A"]
-
     probabilities, attentions = dmn.predict(data)
-    prediction = "@entity" + str(argmax(probabilities))
-    
+    data = data[0]
+    data["P"] = "@entity" + str(argmax(probabilities))
+    data["A"] = correct_answer    # The predict function overwrites this
+
+    data = replace_entities(data)
+
     return jsonify(
-        context=context,
-        question=question,
-        correct_answer=correct_answer,
-        prediction=prediction
+        context=data["C"],
+        question=data["Q"],
+        correct_answer=data["A"],
+        prediction=data["P"]
     )
+
+
+def replace_entities(data):
+    """ Replaces @entityN with actual string
+    """
+    context = data["C"]
+    question = data["Q"]
+    correct_answer = data["A"]
+    prediction = data["P"]
+    split_context = context.split()
+    split_question = question.split()
+
+    for k, v in data["E"].iteritems():
+        for i, w in enumerate(split_context):
+            if w == k:
+                split_context[i] = v
+                
+        for i, w in enumerate(split_question):
+            if w == k:
+                split_question[i] = v
+
+        if (correct_answer == k):
+            data["A"] = v
+        if (prediction == k):
+            data["P"] = v
+
+    data["C"] = " ".join(split_context)
+    data["Q"] = " ".join(split_question)
+
+    return data
 
 
 if __name__ == '__main__':

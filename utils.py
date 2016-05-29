@@ -27,7 +27,7 @@ def init_file(path):
     tasks = []
     task = None
     with open(path) as f:
-        task = {"C": "", "Q": "", "A": ""}
+        task = {"C": "", "Q": "", "A": "", "E": {}}
         for i, line in enumerate(f):
             line = line.strip()
             if i == 2:
@@ -36,6 +36,8 @@ def init_file(path):
                 task["Q"] = line
             elif i == 6:
                 task["A"] = line
+            elif i > 7:
+                task["E"][line.split(":")[0]] = line.split(":")[1]
         tasks.append(task.copy())
 
     return tasks
