@@ -386,7 +386,6 @@ class DMN_smooth:
     def predict(self, data):
         # data is an array of objects like {"Q": "question", "C": "sentence ."}
         data[0]["A"] = "."
-        print "==> predicting:", data
         inputs, questions, answers, input_masks = self._process_input(data)
         probabilities, loss, attentions = self.test_fn(inputs[0], questions[0], answers[0], input_masks[0])
         return probabilities, attentions
